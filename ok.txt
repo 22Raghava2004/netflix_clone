@@ -1,0 +1,11 @@
+#aiven
+DATABASES={
+    'default':{
+        'ENGINE':'django.db.backends.postgresql_psycopg2',
+        'NAME':'defaultdb',
+        'USER':'avnadmin',
+        'PASSWORD':'',
+        'HOST':'pg-24c23230-raghavangowda007.j.aivencloud.com',
+        'PORT':'13150',
+    }
+}
