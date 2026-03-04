@@ -40,7 +40,7 @@
 
 
         <div class="flex space-x-5 items-center">
-            <form action="search" method="POST">
+            <form action="{% url 'search' %}" method="POST">
                 {% csrf_token %}
                 <input type="search" name="search_term" placeholder="Search" class="bg-gray-700 p-2 rounded">
                 <button class="bg-red-600 text-white p-2 rounded hover:bg-red-500">Search</button>
@@ -71,10 +71,14 @@
                 data-release-date="{{ movie.release_date|date:'Y' }}"
                 data-genre="{{ movie.get_genre_display }}" 
                 data-length="{{ movie.length }}"
-                data-image-card-url="{{ movie.image_card.url }}"
-                data-image-cover-url="{{ movie.image_cover.url }}"
+                data-image-card-url="{% if movie.image_card %}{{ movie.image_card.url }}{% endif %}"
+                data-image-cover-url="{% if movie.image_cover %}{{ movie.image_cover.url }}{% endif %}"
                 data-video-url="/movie/{{ movie.uu_id }}"
-                style="background-image: url('{{movie.image_card.url}}'); background-size: cover; background-position: center;">
+                {% if movie.image_card %}
+                style="background-image: url('{{ movie.image_card.url }}'); background-size: cover; background-position: center;"
+                {% else %}
+                style="background-color: #2d2d2d;"
+                {% endif %}>
             </div>
             {% endfor %}
     </section>

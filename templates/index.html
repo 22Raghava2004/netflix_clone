@@ -34,13 +34,16 @@
                     <ul><a href="/genre/fantasy/">Fantasy</a></ul>
                 </div>
             </div>
+            <div>
+                <button><a href="/upload" class="bg-blue-600 text-white p-2 rounded hover:bg-blue-500">Upload</a></button>
+            </div>
 
             <span><a href="/my-list">My List</a></span>
         </nav>
 
 
         <div class="flex space-x-5 items-center">
-            <form action="search" method="POST">
+            <form action="{% url 'search' %}" method="POST">
                 {% csrf_token %}
                 <input type="search" name="search_term" placeholder="Search" class="bg-gray-700 p-2 rounded">
                 <button class="bg-red-600 text-white p-2 rounded hover:bg-red-500">Search</button>
@@ -51,14 +54,16 @@
             </div>
         </div>
     </header>
-    <section class="relative py-20 px-10" style="background-image: url('{{featured_movie.image_cover.url}}'); background-size: cover; background-position: center;">
+    <section class="relative py-20 px-10" {% if featured_movie and featured_movie.image_cover %}style="background-image: url('{{ featured_movie.image_cover.url }}'); background-size: cover; background-position: center;"{% else %}style="background-color: #1f1f1f;"{% endif %}>
         <div>
-            <h1 style="color: black;" class="text-5xl mb-5">{{featured_movie.title}}</h1>
-            <p style="color: black;" class="mb-5">{{featured_movie.description}}</p>
+            <h1 style="color: black;" class="text-5xl mb-5">{{ featured_movie.title|default:"No featured movie" }}</h1>
+            <p style="color: black;" class="mb-5">{{ featured_movie.description|default:"Upload a movie to get started." }}</p>
             <div class="flex space-x-4">
-                <a href="/movie/{{featured_movie.uu_id}}">
+                {% if featured_movie %}
+                <a href="/movie/{{ featured_movie.uu_id }}">
                     <button class="bg-red-600 text-white p-2 px-5 rounded hover:bg-red-500">Play</button>
                 </a>
+                {% endif %}
             </div>
         </div>
     </section>
@@ -67,20 +72,27 @@
         <h2 class="text-xl mb-5">Popular on Netflix</h2>
         <div class="flex space-x-5 overflow-x-auto">
 
-            {% for movie in movies %}
-            <div class="w-40 h-64 flex-shrink-0 film-card"
-                onclick="showModal(this)" 
-                data-title="{{ movie.title }}"
-                data-description="{{ movie.description }}"
-                data-release-date="{{ movie.release_date|date:'Y' }}"
-                data-genre="{{ movie.get_genre_display }}" 
-                data-length="{{ movie.length }}"
-                data-image-card-url="{{ movie.image_card.url }}"
-                data-image-cover-url="{{ movie.image_cover.url }}"
-                data-video-url="/movie/{{ movie.uu_id }}"
-                style="background-image: url('{{movie.image_card.url}}'); background-size: cover; background-position: center;">
-            </div>
-            {% endfor %}
+           {% for movie in movies %}
+            <div class="w-40 h-64 flex-shrink-0 film-card" 
+            onclick="showModal(this)" 
+
+            data-title="{{ movie.title }}"
+            data-description="{{ movie.description }}"
+            data-release-date="{{ movie.release_date|date:'Y' }}"
+            data-genre="{{ movie.get_genre_display }}"
+            data-length="{{ movie.length }}"
+            data-image-card-url="{% if movie.image_card %}{{ movie.image_card.url }}{% endif %}"
+            data-image-cover-url="{% if movie.image_cover %}{{ movie.image_cover.url }}{% endif %}"
+            data-video-url="/movie/{{ movie.uu_id }}"
+            {% if movie.image_card %}
+            style="background-image:url('{{ movie.image_card.url }}'); background-size: cover; background-position: center;"
+            {% else %}
+            style="background-color: #2d2d2d;"
+            {% endif %} >
+
+                   </div> 
+             {% endfor %}
+        </div>
     </section>
     
     

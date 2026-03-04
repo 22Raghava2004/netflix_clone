@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload File</title>
+</head>
+<body>
+    <form action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="text" name="title" placeholder="title"><br><br>
+        <textarea name="description" placeholder="description"></textarea><br><br>
+        <input type="date" name="release_date"><br><br>
+        <select name="genre"><br><br>
+            <option value="action">action</option>
+            <option value="comedy">comedy</option>
+            <option value="drama">drama</option>
+            <option value="horror">horror</option>
+            <option value="romance">romance</option>
+            <option value="science_fiction">science_fiction</option>
+            <option value="fantasy">fantasy</option>
+        </select><br><br>
+        <input type="number" name="length" placeholder="length of movie"><br><br>
+        <input type="file" name="image_card" placeholder="paste the image"><br><br>
+        <input type="file" name="image_cover" placeholder="image_cover"><br><br>
+        <input type="file" name="video" placeholder="video"><br><br>
+
+        <button type="submit" name="submit">
+            Upload
+        </button>
+        
+    </form>
+
+    {% if new_movie %}
+
+    {% for mallu in new_movie %}
+
+
+    <h1>{{ mallu.movie.title }}</h1>
+    <p>{{ mallu.movie.description }}</p>    
+    <p>{{ mallu.movie.release_date }}</p>
+    <p>{{ mallu.movie.genre }}</p>
+    <p>{{ mallu.movie.length }}</p>
+    {% if mallu.movie.image_card %}
+    <img src="{{ mallu.movie.image_card.url }}" alt="Movie Image Card">
+    {% endif %}
+    {% if mallu.movie.image_cover %}
+    <img src="{{ mallu.movie.image_cover.url }}" alt="Movie Image Cover">
+    {% endif %}
+    {% if mallu.movie.video %}
+    <video controls>
+        <source src="{{ mallu.movie.video.url }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    {% endif %}
+
+    {% endfor %}
+
+    {% endif %}
+</body>
+</html>
+
