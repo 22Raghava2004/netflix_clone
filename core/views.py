@@ -13,7 +13,7 @@ from .models import Movie,MovieList
 @login_required(login_url='login')
 def index(request):
     movies = Movie.objects.all()
-    featured_movie = movies[len(movies)-1]
+    featured_movie = movies.last()
     context = {
         'movies': movies,
         'featured_movie': featured_movie,
@@ -142,6 +142,7 @@ def upload(request):
         image_movie_card=request.FILES.get('image_card')
         image_movie_cover=request.FILES.get('image_cover')
         movie_video=request.FILES.get('video')
+    
 
         new_movie=Movie.objects.create(title=title_of,description=movie_description,release_date=movie_release_date,genre=movie_genre,length=movie_length,
                                        image_card=image_movie_card,image_cover=image_movie_cover,video=movie_video)
