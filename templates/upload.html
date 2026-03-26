@@ -6,6 +6,7 @@
     <title>Upload File</title>
 </head>
 <body>
+    <a href="{% url 'index' %}">Home</a>
     <form action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="text" name="title" placeholder="title"><br><br>
