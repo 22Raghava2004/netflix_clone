@@ -34,7 +34,7 @@ SECRET_KEY = 'django-insecure-fh49&lib29v2g*lru0=j*6(l34_3$cv+8=@2%@2znj))8!uyej
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['netflix-clone-website.onrender.com', 'localhost']
+ALLOWED_HOSTS = ['netflix-clone.onrender.com']
 
 
 # Application definition
